@@ -51,7 +51,7 @@ void  updateRemoteDot(const char *packet);
 void  handle_signal(int signal);
 // Utility
 _Noreturn void usage(const char *program_name, int exit_code, const char *message);
-void           generateRandomCoordinates(int *x, int *y);
+//void           generateRandomCoordinates(int *x, int *y);
 void           setupNcurses(void);
 void           cleanupNcurses(void);
 void           drawDot(int x, int y, int color_pair);
