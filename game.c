@@ -4,7 +4,7 @@
 #include <stdnoreturn.h>
 #define SELECT_TIMEOUT_USEC 100000
 #define BUFFER_SIZE 1024
-#define GAME_GRID_SIZE 100
+#define GAME_GRID_SIZE 20
 #define TEN 10
 
 typedef struct
@@ -361,7 +361,6 @@ ssize_t receiveUDPMessage(int sockfd, struct sockaddr_storage *source_addr, sock
     }
 
     // Process the received message
-    printf("Received packet: %s\n", buffer);
     handleReceivedPacket(buffer);
 
     return bytes_received;
@@ -378,7 +377,6 @@ char *createPacket(int x, int y, const char *game_state)
 
 void handleReceivedPacket(const char *packet)
 {
-    printf("Processing packet: %s\n", packet);
     updateRemoteDot(packet);    // Example of how packet might be handled
 }
 
@@ -598,11 +596,19 @@ void sendPositionUpdate(void)
     }
 }
 
-
-// Updates the ncurses gui
 void updateScreen(void)
 {
-    clearScreen();
+    clear();    // Clear the screen
+
+    // Draw the grid background
+    for(int y = 0; y < GAME_GRID_SIZE; ++y)
+    {
+        for(int x = 0; x < GAME_GRID_SIZE; ++x)
+        {
+            mvaddch(y, x, '.');    // Move to position (y, x) and add a dot
+        }
+    }
+
     // Draw local player's dot
     if(context.is_host)
     {
@@ -612,6 +618,7 @@ void updateScreen(void)
     {
         drawDot(context.clientx, context.clienty, 2);    // Client dot
     }
+
     // Draw remote player's dot if known
     if(context.is_host && context.clientx >= 0 && context.clienty >= 0)
     {
@@ -621,7 +628,8 @@ void updateScreen(void)
     {
         drawDot(context.hostx, context.hosty, 1);    // Host dot
     }
-    refresh();
+
+    refresh();    // Refresh the screen to display changes
 }
 
 // Receives updates of dot position

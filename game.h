@@ -24,7 +24,6 @@
 #define GAME_LOOP_COUNT 5
 #define DEFAULT_PORT 8080
 #define DEFAULT_IP "192.168.0.1"
-#define GAME_GRID_SIZE 100
 
 // Function prototypes
 
